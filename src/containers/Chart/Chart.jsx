@@ -2,17 +2,35 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
 import { connect } from "react-redux";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const Chart = ({ selectedChart }) => {
   const classes = useStyles({
     color: selectedChart && selectedChart.color,
   });
+  const theme = useTheme();
+  console.log(theme);
+
+  console.log(classes);
 
   if (!selectedChart) {
     return <Redirect to="/dashboard" />;
   }
+
+  const options = {
+    maintainAspectRatio: true,
+    responsive: true,
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  };
 
   const data = {
     labels: selectedChart.graph.label,
@@ -34,20 +52,6 @@ const Chart = ({ selectedChart }) => {
       )}
     </div>
   );
-};
-
-const options = {
-  maintainAspectRatio: false,
-  responsive: true,
-  scales: {
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    ],
-  },
 };
 
 const useStyles = makeStyles((theme) => ({
